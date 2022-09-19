@@ -80,14 +80,35 @@ class Tmc5160Config:
 
         To convert from µps to rps, simply divide by the number of microsteps per turn or (microsteps * steps_per_turn)
         """
+        # Convert all units to internal
+        vstart_int = self.rps_velocity_to_internal_velocity(vstart)
+        a1_int = self.rps_acceleration_to_internal_acceleration(a1)
+        v1_int = self.rps_velocity_to_internal_velocity(v1)
+        amax_int = self.rps_acceleration_to_internal_acceleration(amax)
+        vmax_int = self.rps_velocity_to_internal_velocity(vmax)
+        dmax_int = self.rps_acceleration_to_internal_acceleration(dmax)
+        d1_int = self.rps_acceleration_to_internal_acceleration(d1)
+        vstop_int = self.rps_velocity_to_internal_velocity(vstop)
 
-        self.tmc_eval.write_register(self.tmc_ic.REG.A1, 1000)
-        self.tmc_eval.write_register(self.tmc_ic.REG.V1, 50000)
-        self.tmc_eval.write_register(self.tmc_ic.REG.D1, 500)
-        self.tmc_eval.write_register(self.tmc_ic.REG.DMAX, 500)
-        self.tmc_eval.write_register(self.tmc_ic.REG.VSTART, 0)
-        self.tmc_eval.write_register(self.tmc_ic.REG.VSTOP, 10)
-        self.tmc_eval.write_register(self.tmc_ic.REG.AMAX, 1000)
+        # Write registers
+        self.tmc_eval.write_register(self.tmc_ic.REG.A1, a1_int)
+        self.tmc_eval.write_register(self.tmc_ic.REG.V1, v1_int)
+        self.tmc_eval.write_register(self.tmc_ic.REG.D1, d1_int)
+        self.tmc_eval.write_register(self.tmc_ic.REG.DMAX, dmax_int)
+        self.tmc_eval.write_register(self.tmc_ic.REG.VSTART, vstart_int)
+        self.tmc_eval.write_register(self.tmc_ic.REG.VSTOP, vstop_int)
+        self.tmc_eval.write_register(self.tmc_ic.REG.AMAX, amax_int)
+        self.tmc_eval.write_register(self.tmc_ic.REG.VMAX, vmax_int)
+
+        # Pretty print some stuff
+        print(f"Written VSTART to {vstart_int} internal units (requested {vstart} rps)")
+        print(f"Written A1 to {a1_int} internal units (requested {a1} rps)")
+        print(f"Written V1 to {v1_int} internal units (requested {v1} rps)")
+        print(f"Written AMAX to {amax_int} internal units (requested {amax} rps)")
+        print(f"Written VMAX to {vmax_int} internal units (requested {vmax} rps)")
+        print(f"Written DMAX to {dmax_int} internal units (requested {dmax} rps)")
+        print(f"Written D1 to {d1_int} internal units (requested {d1} rps)")
+        print(f"Written VSTOP to {vstop_int} internal units (requested {vstop} rps)")
 
     def rps_velocity_to_internal_velocity(self, rps_velocity):
         """
