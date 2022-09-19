@@ -14,6 +14,8 @@ If Decimal mode is used in ENC_MODE.ENC_SEL_DECIMAL
 If Decimal is turned off in ENC_MODE, 12.5 needs to be converted to a Q16.16 fixed point number:
 - Integer will be 12 as well
 - Decimal part will be 5 // (1 / 2^16)
+
+The resulting constant represents the number of encoder steps that happen for every stepper microstep.
 """
 import pytrinamic
 from pytrinamic.connections import ConnectionManager
@@ -22,10 +24,10 @@ from pytrinamic.evalboards import TMC5160_eval
 # System parameters
 microsteps_per_fullstep = 256  # This is the default value in TMC5160, can be configured in CHOPCONF.MRES
 fullsteps_per_turn = 200  # This is usually 200, or 400 on precision steppers.
-encoder_resolution = 10000  # This should be written on the encoder body, usually called P/R on trinamic encoders.
+encoder_resolution = 10000  # This should be written on the encoder body, P/R number
 
 # Calculating constants for the Q16.16 number mode (default mode)
-encoder_constant = (200 * 256) / 10000
+encoder_constant = (fullsteps_per_turn * microsteps_per_fullstep) / encoder_resolution
 encoder_constant_integer = int(encoder_constant)
 encoder_constant_fraction = int((encoder_constant - encoder_constant_integer) / (1 / (1 << 16)))
 
