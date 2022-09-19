@@ -15,7 +15,7 @@ class Tmc5160Config:
     - steps_per_turn: Number of steps of stepper motor, usually 200.
     """
 
-    def __init__(self, interface, clk_freq=12000000, encoder_tick_per_turn=None, steps_per_turn=200) -> None:
+    def __init__(self, interface, steps_per_turn=200, clk_freq=12000000, encoder_tick_per_turn=None) -> None:
         # Initialize class attributes
         self.interface = interface
         self.ckl_freq = clk_freq
