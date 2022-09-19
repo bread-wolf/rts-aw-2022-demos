@@ -3,7 +3,7 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5160_eval
 
 
-class tmc5160Config:
+class Tmc5160Config:
     """
     This class automates configuration tasks to build more complex examples using TMC5160.
 
@@ -64,7 +64,7 @@ class tmc5160Config:
         print(f"Microsteps: {self.microsteps}, Motor Steps: {self.steps_per_turn}, Encoder resolution: {encoder_tick_per_turn}")
         print(f"Q16.16: {encoder_constant} -> Int: 0x{encoder_constant_integer:04X}, Frac: 0x{encoder_constant_fraction:04X}")
 
-    def config_ramper(vstart, a1, v1, amax, vmax, dmax, d1, vstop):
+    def config_ramper(self, vstart=0.05, a1=10.0, v1=0.7, amax=7.0, vmax=1.5, dmax=7.0, d1=10.0, vstop=0.05):
         """
         See README for details on ramper, or datasheet.
         All velocities are in rps, all accelerations in rps^2 (rotations per seconds, rotations per second per second)
@@ -75,5 +75,14 @@ class tmc5160Config:
         - Velocity is in µsteps/s = v_internal * (clk_freq / 2 / 2^23)
         - Acceleration is in µsteps/s^2 = a_internal * clk_freq^2 / (512 * 256) / 2^24
         - Ramp steps are in µsteps = v_internal^2 / a_internal / 2^8
+
+        To convert from µps to rps, simply divide by the number of microsteps per turn or (microsteps * steps_per_turn)
         """
-        pass
+
+        self.tmc_eval.write_register(self.tmc_ic.REG.A1, 1000)
+        self.tmc_eval.write_register(self.tmc_ic.REG.V1, 50000)
+        self.tmc_eval.write_register(self.tmc_ic.REG.D1, 500)
+        self.tmc_eval.write_register(self.tmc_ic.REG.DMAX, 500)
+        self.tmc_eval.write_register(self.tmc_ic.REG.VSTART, 0)
+        self.tmc_eval.write_register(self.tmc_ic.REG.VSTOP, 10)
+        self.tmc_eval.write_register(self.tmc_ic.REG.AMAX, 1000)
