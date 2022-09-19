@@ -1,0 +1,19 @@
+[project]
+name = "rts-aw-2022-demos"
+description = "Trinamic Eval and Module demos for Robot Telecom Strasbourg Afterwork on 21/09/2022."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "requests",
+    'importlib-metadata; python_version<"3.8"',
+]
+dynamic = ["version"]
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 130
