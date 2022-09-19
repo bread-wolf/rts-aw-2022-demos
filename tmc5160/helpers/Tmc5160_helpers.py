@@ -111,19 +111,26 @@ class Tmc5160:
         print(f"Written VSTOP to {vstop_int} internal units (requested {vstop} rps)")
 
     def rotate_rps(self, rps_velocity):
+        """
+        Rotate motor at specified speed in rotations per seconds.
+        """
         vmax_int = self.rps_velocity_to_internal_velocity(rps_velocity)
         self.tmc_motor.rotate(vmax_int)
 
     def rps_velocity_to_internal_velocity(self, rps_velocity):
         """
         First convert rps to microstep : Vmicro = Vrps / microsteps_per_turn.
-        Then convert to internal units, see datasheet page 81 for calculation.
+        Then convert to internal units for velocity, see datasheet page 81 for calculation.
         """
         mpt = self.microsteps * self.steps_per_turn  # Microsteps per turn number
         microstep_velocity = rps_velocity * mpt
         return int(microstep_velocity / (self.ckl_freq / 2 / (1 << 23)))
 
     def rps_acceleration_to_internal_acceleration(self, rps_acceleration):
+        """
+        First convert rps to microstep : Vmicro = Vrps / microsteps_per_turn.
+        Then convert to internal units for acceleration, see datasheet page 81 for calculation.
+        """
         mpt = self.microsteps + self.steps_per_turn  # Microsteps per turn number
         microstep_acceleration = rps_acceleration * mpt
         return int((microstep_acceleration * (1 << 24) * 512 * 256) / (self.ckl_freq * self.ckl_freq))
