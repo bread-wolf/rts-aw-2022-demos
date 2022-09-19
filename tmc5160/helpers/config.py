@@ -52,7 +52,7 @@ class Tmc5160Config:
             self.encoder_tick_per_turn = encoder_tick_per_turn
 
         # Calculating constants for the Q16.16 number mode (default mode)
-        encoder_constant = (self.steps_per_turn * self.microsteps) / encoder_tick_per_turn
+        encoder_constant = (self.steps_per_turn * self.microsteps) / self.encoder_tick_per_turn
         encoder_constant_integer = int(encoder_constant)
         encoder_constant_fraction = int((encoder_constant - encoder_constant_integer) / (1 / (1 << 16)))
 
@@ -61,7 +61,9 @@ class Tmc5160Config:
         self.tmc_eval.write_register_field(self.tmc_ic.FIELD.INTEGER, encoder_constant_integer)
         self.tmc_eval.write_register_field(self.tmc_ic.FIELD.FRACTIONAL, encoder_constant_fraction)
         print("Writing ABN Encoder settings:")
-        print(f"Microsteps: {self.microsteps}, Motor Steps: {self.steps_per_turn}, Encoder resolution: {encoder_tick_per_turn}")
+        print(
+            f"Microsteps: {self.microsteps}, Motor Steps: {self.steps_per_turn}, Encoder resolution: {self.encoder_tick_per_turn}"
+        )
         print(f"Q16.16: {encoder_constant} -> Int: 0x{encoder_constant_integer:04X}, Frac: 0x{encoder_constant_fraction:04X}")
 
     def config_ramper(self, vstart=0.05, a1=10.0, v1=0.7, amax=7.0, vmax=1.5, dmax=7.0, d1=10.0, vstop=0.05):
