@@ -3,7 +3,7 @@ from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5160_eval
 
 
-class Tmc5160Config:
+class Tmc5160:
     """
     This class automates configuration tasks to build more complex examples using TMC5160.
 
