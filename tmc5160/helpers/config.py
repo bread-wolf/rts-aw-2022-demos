@@ -94,11 +94,11 @@ class Tmc5160Config:
         First convert rps to microstep : Vmicro = Vrps / microsteps_per_turn.
         Then convert to internal units, see datasheet page 81 for calculation.
         """
-        mps = self.microsteps + self.steps_per_turn  # Microsteps per turn number
-        microstep_velocity = rps_velocity / mps
-        return microstep_velocity / (self.ckl_freq / 2 / (1 << 23))
+        mpt = self.microsteps * self.steps_per_turn  # Microsteps per turn number
+        microstep_velocity = rps_velocity * mpt
+        return int(microstep_velocity / (self.ckl_freq / 2 / (1 << 23)))
 
     def rps_acceleration_to_internal_acceleration(self, rps_acceleration):
-        mps = self.microsteps + self.steps_per_turn  # Microsteps per turn number
-        microstep_acceleration = rps_acceleration / mps
-        return (microstep_acceleration * (1 << 24) * 512 * 256) / (self.ckl_freq * self.ckl_freq)
+        mpt = self.microsteps + self.steps_per_turn  # Microsteps per turn number
+        microstep_acceleration = rps_acceleration * mpt
+        return int((microstep_acceleration * (1 << 24) * 512 * 256) / (self.ckl_freq * self.ckl_freq))
