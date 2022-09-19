@@ -37,7 +37,7 @@ class tmc5160Config:
         else:
             self.microsteps = 256 / (1 << mres)
 
-    def encoder_config(self, encoder_tick_per_turn=None):
+    def config_encoder(self, encoder_tick_per_turn=None):
         """
         Configures ABN encoder interface for TMC5160.
         """
@@ -64,7 +64,7 @@ class tmc5160Config:
         print(f"Microsteps: {self.microsteps}, Motor Steps: {self.steps_per_turn}, Encoder resolution: {encoder_tick_per_turn}")
         print(f"Q16.16: {encoder_constant} -> Int: 0x{encoder_constant_integer:04X}, Frac: 0x{encoder_constant_fraction:04X}")
 
-    def ramper_config(vstart, a1, v1, amax, vmax, dmax, d1, vstop):
+    def config_ramper(vstart, a1, v1, amax, vmax, dmax, d1, vstop):
         """
         See README for details on ramper, or datasheet.
         All velocities are in rps, all accelerations in rps^2 (rotations per seconds, rotations per second per second)
