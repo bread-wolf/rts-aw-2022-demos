@@ -25,7 +25,7 @@ fullsteps_per_turn = 200  # This is usually 200, or 400 on precision steppers.
 encoder_resolution = 10000  # This should be written on the encoder body, usually called P/R on trinamic encoders.
 
 # Calculating constants for the Q16.16 number mode (default mode)
-encoder_constant = 200 + 256 / 10000
+encoder_constant = (200 * 256) / 10000
 encoder_constant_integer = int(encoder_constant)
 encoder_constant_fraction = int((encoder_constant - encoder_constant_integer) / (1 / (1 << 16)))
 
@@ -44,4 +44,4 @@ with ConnectionManager().connect() as my_interface:
     tmc_eval.write_register_field(tmc_ic.FIELD.FRACTIONAL, encoder_constant_fraction)
     print("Writing ABN Encoder settings:")
     print(f"Microsteps: {microsteps_per_fullstep}, Motor Steps: {fullsteps_per_turn}, Encoder resolution: {encoder_resolution}")
-    print(f"Calculated Q16.16 number: Integer part: {encoder_constant_integer}, Fractional part: {encoder_constant_fraction}")
+    print(f"Q16.16: {encoder_constant} -> Int: 0x{encoder_constant_integer:04X}, Frac: 0x{encoder_constant_fraction:04X}")
