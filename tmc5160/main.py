@@ -1,7 +1,9 @@
+import time
+
 import pytrinamic
+from helpers.Tmc5160_helpers import Tmc5160
 from pytrinamic.connections import ConnectionManager
 from pytrinamic.evalboards import TMC5160_eval
-from helpers.Tmc5160_helpers import Tmc5160
 
 pytrinamic.show_info()
 with ConnectionManager().connect() as my_interface:

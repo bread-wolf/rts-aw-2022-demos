@@ -110,6 +110,10 @@ class Tmc5160:
         print(f"Written D1 to {d1_int} internal units (requested {d1} rps)")
         print(f"Written VSTOP to {vstop_int} internal units (requested {vstop} rps)")
 
+    def rotate_rps(self, rps_velocity):
+        vmax_int = self.rps_velocity_to_internal_velocity(rps_velocity)
+        self.tmc_motor.rotate(vmax_int)
+
     def rps_velocity_to_internal_velocity(self, rps_velocity):
         """
         First convert rps to microstep : Vmicro = Vrps / microsteps_per_turn.
