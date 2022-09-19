@@ -88,3 +88,17 @@ class Tmc5160Config:
         self.tmc_eval.write_register(self.tmc_ic.REG.VSTART, 0)
         self.tmc_eval.write_register(self.tmc_ic.REG.VSTOP, 10)
         self.tmc_eval.write_register(self.tmc_ic.REG.AMAX, 1000)
+
+    def rps_velocity_to_internal_velocity(self, rps_velocity):
+        """
+        First convert rps to microstep : Vmicro = Vrps / microsteps_per_turn.
+        Then convert to internal units, see datasheet page 81 for calculation.
+        """
+        mps = self.microsteps + self.steps_per_turn  # Microsteps per turn number
+        microstep_velocity = rps_velocity / mps
+        return microstep_velocity / (self.ckl_freq / 2 / (1 << 23))
+
+    def rps_acceleration_to_internal_acceleration(self, rps_acceleration):
+        mps = self.microsteps + self.steps_per_turn  # Microsteps per turn number
+        microstep_acceleration = rps_acceleration / mps
+        return (microstep_acceleration * (1 << 24) * 512 * 256) / (self.ckl_freq * self.ckl_freq)
