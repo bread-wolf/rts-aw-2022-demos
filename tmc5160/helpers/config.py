@@ -66,7 +66,7 @@ class Tmc5160Config:
         )
         print(f"Q16.16: {encoder_constant} -> Int: 0x{encoder_constant_integer:04X}, Frac: 0x{encoder_constant_fraction:04X}")
 
-    def config_ramper(self, vstart=0.05, a1=10.0, v1=0.7, amax=7.0, vmax=1.5, dmax=7.0, d1=10.0, vstop=0.05):
+    def config_ramper(self, vstart=0.05, a1=100.0, v1=0.7, amax=70.0, vmax=1.5, dmax=60.0, d1=90.0, vstop=0.05):
         """
         See README for details on ramper, or datasheet.
         All velocities are in rps, all accelerations in rps^2 (rotations per seconds, rotations per second per second)
