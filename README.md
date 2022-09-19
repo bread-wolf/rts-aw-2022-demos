@@ -10,6 +10,9 @@ PyTrinamic is necessary to run the examples, python 3.8.x and up is recommended.
 pip install pytrinamic
 ```
 
+Examples from basic_examples can be ran standalone, and demonstrate the basic features of PyTrinamic.
+helpers contain more complex code that is used in main.py, it builds up on the basic examples makign them reusable and functional.
+
 ### How to contribute
 
 For contributing, isort and black are necessary, both will automatically run within vscode default python extension.
